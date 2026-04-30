@@ -163,7 +163,3 @@ Visit **http://localhost:8000**
 3. Set quantity and click **Add** to add items to your cart
 4. Review your order and click **Place Order**
 5. Stock updates automatically after each order
-
-```
-
-```
