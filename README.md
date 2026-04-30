@@ -26,23 +26,23 @@ A multi-user order and inventory management system built with **Laravel** (API) 
 
 ## Database Structure
 
-| Table | Columns |
-|---|---|
-| `users` | id, name, email, password |
-| `products` | id, name, price, stock |
-| `orders` | id, user_id, total_price |
+| Table         | Columns                                   |
+| ------------- | ----------------------------------------- |
+| `users`       | id, name, email, password                 |
+| `products`    | id, name, price, stock                    |
+| `orders`      | id, user_id, total_price                  |
 | `order_items` | id, order_id, product_id, quantity, price |
 
 ---
 
 ## API Endpoints
 
-| Method | Endpoint | Description | Auth |
-|---|---|---|---|
-| POST | `/api/login` | Login and get token | No |
-| POST | `/api/logout` | Logout and revoke token | Yes |
-| GET | `/api/products` | List all products | Yes |
-| POST | `/api/orders` | Place a new order | Yes |
+| Method | Endpoint        | Description             | Auth |
+| ------ | --------------- | ----------------------- | ---- |
+| POST   | `/api/login`    | Login and get token     | No   |
+| POST   | `/api/logout`   | Logout and revoke token | Yes  |
+| GET    | `/api/products` | List all products       | Yes  |
+| POST   | `/api/orders`   | Place a new order       | Yes  |
 
 ---
 
@@ -125,17 +125,18 @@ This creates the tables and seeds 5 sample products.
 
 ### 5. Run the application
 
-Open two terminals:
+# Build frontend assets once
 
-**Terminal 1 — Laravel server:**
-```bash
+npm run build
+
+# Set production environment
+
+APP_ENV=production
+APP_DEBUG=false
+
+# Start server - no need for npm run dev!
+
 php artisan serve
-```
-
-**Terminal 2 — Vite dev server:**
-```bash
-npm run dev
-```
 
 ### 6. Open in browser
 
@@ -143,8 +144,8 @@ Visit **http://localhost:8000**
 
 ### Test credentials
 
-| Email | Password |
-|---|---|
+| Email            | Password |
+| ---------------- | -------- |
 | test@example.com | password |
 
 ---
