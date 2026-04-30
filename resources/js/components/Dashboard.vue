@@ -50,13 +50,25 @@
                                 </p>
                                 <p
                                     class="product-stock"
-                                    :class="{ 'low-stock': product.stock < 10 }"
+                                    :class="{
+                                        'low-stock':
+                                            product.stock < 10 &&
+                                            product.stock > 0,
+                                        'out-of-stock': product.stock === 0,
+                                    }"
                                 >
-                                    {{ product.stock }} in stock
+                                    {{
+                                        product.stock === 0
+                                            ? "Out of Stock"
+                                            : `${product.stock} in stock`
+                                    }}
                                 </p>
                             </div>
                             <div class="product-actions">
-                                <div class="quantity-control">
+                                <div
+                                    class="quantity-control"
+                                    v-if="product.stock > 0"
+                                >
                                     <button
                                         @click="
                                             product.qty > 1
@@ -91,8 +103,15 @@
                                     @click="addToCart(product)"
                                     :disabled="product.stock === 0"
                                     class="add-to-cart-btn"
+                                    :class="{
+                                        'disabled-btn': product.stock === 0,
+                                    }"
                                 >
-                                    Add to Cart
+                                    {{
+                                        product.stock === 0
+                                            ? "Out of Stock"
+                                            : "Add to Cart"
+                                    }}
                                 </button>
                             </div>
                         </div>
@@ -149,7 +168,7 @@
                         </div>
                         <button
                             @click="placeOrder"
-                            :disabled="placingOrder"
+                            :disabled="placingOrder || cart.length === 0"
                             class="place-order-btn"
                         >
                             {{
@@ -210,9 +229,24 @@ const fetchProducts = async () => {
 };
 
 const addToCart = (product) => {
+    // Stock မရှိတော့ရင် မထည့်ရအောင် စစ်ဆေးခြင်း
+    if (product.stock === 0) {
+        showNotification(`${product.name} is out of stock.`, "error");
+        return;
+    }
+
     const qty = product.qty || 1;
+
+    // လက်ရှိ cart ထဲမှာရှိနေတဲ့ quantity နဲ့ stock ကိုစစ်ဆေးခြင်း
     const existing = cart.value.find((i) => i.product_id === product.id);
     if (existing) {
+        if (existing.quantity + qty > product.stock) {
+            showNotification(
+                `Cannot add more ${product.name}. Only ${product.stock} available.`,
+                "error",
+            );
+            return;
+        }
         existing.quantity += qty;
     } else {
         cart.value.push({
@@ -241,7 +275,7 @@ const placeOrder = async () => {
         await api.post("/orders", { items });
         cart.value = [];
         showNotification("Order placed successfully!");
-        fetchProducts();
+        await fetchProducts(); // Refresh products to update stock
     } catch (err) {
         showNotification(
             err.response?.data?.message || "Failed to place order.",
@@ -421,6 +455,11 @@ onMounted(() => {
     font-weight: 500;
 }
 
+.out-of-stock {
+    color: #dc2626;
+    font-weight: 600;
+}
+
 .product-actions {
     display: flex;
     flex-direction: column;
@@ -483,6 +522,16 @@ onMounted(() => {
     opacity: 0.5;
     cursor: not-allowed;
     transform: none;
+}
+
+.disabled-btn {
+    background-color: #9ca3af !important;
+    cursor: not-allowed !important;
+}
+
+.disabled-btn:hover {
+    transform: none !important;
+    background-color: #9ca3af !important;
 }
 
 .cart-items {

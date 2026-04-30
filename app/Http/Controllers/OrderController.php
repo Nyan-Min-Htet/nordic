@@ -30,13 +30,13 @@ class OrderController extends Controller
                     ], 422);
                 }
 
-                $price = $product->price * $item['quantity'];
-                $totalPrice += $price;
+                $itemTotal = $product->price * $item['quantity'];
+                $totalPrice += $itemTotal;
 
                 $orderItems[] = [
                     'product_id' => $product->id,
                     'quantity' => $item['quantity'],
-                    'price' => $price,
+                    'price' => $product->price,
                 ];
 
                 $product->decrement('stock', $item['quantity']);
@@ -54,5 +54,20 @@ class OrderController extends Controller
                 'order' => $order->load('items.product'),
             ], 201);
         });
+    }
+
+    public function restock(Request $request, $id)
+    {
+        $request->validate([
+            'quantity' => 'required|integer|min:1'
+        ]);
+
+        $product = Product::findOrFail($id);
+        $product->increment('stock', $request->quantity);
+
+        return response()->json([
+            'message' => 'Product restocked successfully',
+            'product' => $product
+        ]);
     }
 }

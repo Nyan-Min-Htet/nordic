@@ -14,7 +14,7 @@ class ProductSeeder extends Seeder
             ['name' => 'Mechanical Keyboard', 'price' => 79.99, 'stock' => 30],
             ['name' => 'USB-C Hub', 'price' => 45.00, 'stock' => 40],
             ['name' => 'Monitor Stand', 'price' => 34.99, 'stock' => 25],
-            ['name' => 'Webcam HD', 'price' => 59.99, 'stock' => 20],
+            ['name' => 'Webcam HD', 'price' => 59.99, 'stock' => 30],
         ];
 
         foreach ($products as $product) {
