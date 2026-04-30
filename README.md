@@ -125,18 +125,24 @@ This creates the tables and seeds 5 sample products.
 
 ### 5. Run the application
 
-# Build frontend assets once
+Build frontend assets once
 
+```
 npm run build
+```
 
-# Set production environment
+Set production environment
 
+```
 APP_ENV=production
 APP_DEBUG=false
+```
 
-# Start server - no need for npm run dev!
+Start server - no need for npm run dev!
 
+```
 php artisan serve
+```
 
 ### 6. Open in browser
 
@@ -157,3 +163,7 @@ Visit **http://localhost:8000**
 3. Set quantity and click **Add** to add items to your cart
 4. Review your order and click **Place Order**
 5. Stock updates automatically after each order
+
+```
+
+```
