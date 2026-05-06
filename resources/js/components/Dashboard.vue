@@ -229,7 +229,6 @@ const fetchProducts = async () => {
 };
 
 const addToCart = (product) => {
-    // Stock မရှိတော့ရင် မထည့်ရအောင် စစ်ဆေးခြင်း
     if (product.stock === 0) {
         showNotification(`${product.name} is out of stock.`, "error");
         return;
@@ -237,7 +236,6 @@ const addToCart = (product) => {
 
     const qty = product.qty || 1;
 
-    // လက်ရှိ cart ထဲမှာရှိနေတဲ့ quantity နဲ့ stock ကိုစစ်ဆေးခြင်း
     const existing = cart.value.find((i) => i.product_id === product.id);
     if (existing) {
         if (existing.quantity + qty > product.stock) {
